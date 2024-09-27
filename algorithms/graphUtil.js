@@ -1,3 +1,5 @@
+import fifo from '@stdlib/utils/fifo';
+
 /**
  * @typedef {number} Vertex
  * @typedef {Vertex | {v: Vertex, weight: number}} Edge
@@ -53,13 +55,16 @@ export function transpose(G) {
  * 
  * @param {Graph} G
  * @param {Vertex} u
- * @param {{visited: boolean[], onEnter: NodeEvent, onExit: NodeEvent}} opts 
+ * @param {Object} opts
+ * @param {boolean[]} opts.visited
+ * @param {NodeEvent} opts.onEnter
+ * @param {NodeEvent} opts.onExit
  */
-export function DFS(G, u, opts = {}) {
-    opts.visited = opts.visited || new Array(G.length).fill(false);
-    opts.onEnter = opts.onEnter || (() => { });
-    opts.onExit = opts.onExit || (() => { });
-
+export function DFS(G, u, {
+    visited = new Array(G.length).fill(false),
+    onEnter = () => { },
+    onExit = () => { },
+} = {}) {
     onEnter(u);
     visited[u] = true;
     for (const v of G[u]) {
@@ -73,14 +78,17 @@ export function DFS(G, u, opts = {}) {
  * 
  * @param {Graph} G 
  * @param {Vertex} u 
- * @param {{visited: boolean[], onEnter: NodeEvent, onExit: NodeEvent}} opts 
+ * @param {Object} opts
+ * @param {boolean[]} opts.visited
+ * @param {NodeEvent} opts.onEnter
+ * @param {NodeEvent} opts.onExit
  */
-export function BFS(G, u, opts = {}) {
-    opts.visited = opts.visited || new Array(G.length).fill(false);
-    opts.onEnter = opts.onEnter || (() => { });
-    opts.onExit = opts.onExit || (() => { });
-
-    let queue = [u];
+export function BFS(G, u, {
+    visited = new Array(G.length).fill(false),
+    onEnter = () => { },
+    onExit = () => { },
+} = {}) {
+    let queue = [u]; // FIXME: that's shitty without proper fifo
     while (queue.length) {
         let u = queue.shift();
         onEnter(u);
