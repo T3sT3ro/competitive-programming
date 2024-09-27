@@ -77,9 +77,10 @@ for i in $DAYS; do
 import $ from '../in.mjs';
 import _ from 'lodash';
 import 'core-js/es/object/group-by.js';
+import 'core-js/actual/iterator/index.js';
 // --- browser devtools cutoff ---
 const t = \$('IN/$DAY_PADDED').textContent.trim()
-    .split('\n')
+    .split('\n');
 TEMPLATE
     fi
 done
